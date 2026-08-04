@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>英文HTML文章 → 趣味中文精美排版</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        background: #f0f2f5;
+        color: #333;
+        min-height: 100vh;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        padding: 20px 24px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      }
+      .header h1 {
+        font-size: 1.4em;
+        font-weight: 700;
+      }
+      .header p {
+        font-size: 0.85em;
+        opacity: 0.85;
+        margin-top: 4px;
+      }
+
+      .main {
+        max-width: 1500px;
+        margin: 0 auto;
+        padding: 20px;
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+      }
+      .main .card {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 24px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      }
+      .card h2 {
+        font-size: 1.1em;
+        margin-bottom: 14px;
+        color: #1a1a1a;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .step-num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #fff;
+        font-size: 0.85em;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+
+      textarea {
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 0.88em;
+        font-family: inherit;
+        resize: vertical;
+        background: #fafafa;
+        transition: border-color 0.2s;
+      }
+      textarea:focus {
+        outline: none;
+        border-color: #667eea;
+        background: #fff;
+      }
+      textarea.code {
+        font-family: "Cascadia Code", "Fira Code", monospace;
+        font-size: 0.82em;
+      }
+
+      input[type="url"] {
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 0.9em;
+        font-family: inherit;
+        transition: border-color 0.2s;
+      }
+      input[type="url"]:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 22px;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.9em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #fff;
+      }
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+      }
+      .btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+      .btn-outline {
+        background: #fff;
+        color: #667eea;
+        border: 1.5px solid #667eea;
+      }
+      .btn-outline:hover {
+        background: #f5f3ff;
+      }
+      .btn-sm {
+        padding: 6px 16px;
+        font-size: 0.82em;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 0;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #ddd;
+      }
+      .tab {
+        flex: 1;
+        text-align: center;
+        padding: 9px;
+        font-size: 0.85em;
+        cursor: pointer;
+        background: #fafafa;
+        transition: background 0.15s;
+        font-weight: 500;
+      }
+      .tab.active {
+        background: #667eea;
+        color: #fff;
+      }
+      .tab:not(.active):hover {
+        background: #eee;
+      }
+
+      .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        max-width: 420px;
+      }
+      .tool-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 11px 8px;
+        border-radius: 8px;
+        background: #f5f3ff;
+        color: #5b21b6;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.87em;
+        border: 1px solid #e9d5ff;
+        transition: all 0.15s;
+      }
+      .tool-btn:hover {
+        background: #ede9fe;
+        border-color: #c4b5fd;
+        transform: translateY(-1px);
+      }
+      .tool-btn .arrow {
+        font-size: 0.8em;
+        opacity: 0.6;
+      }
+
+      .md-preview {
+        background: #fafafa;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 14px;
+        font-size: 0.85em;
+        max-height: 260px;
+        overflow-y: auto;
+        line-height: 1.7;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .md-preview.placeholder {
+        color: #bbb;
+        font-style: italic;
+      }
+
+      .msg {
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 0.85em;
+        margin-top: 10px;
+        display: none;
+      }
+      .msg.success {
+        display: block;
+        background: #dcfce7;
+        color: #166534;
+      }
+      .msg.error {
+        display: block;
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      .spinner {
+        display: none;
+        width: 18px;
+        height: 18px;
+        border: 2.5px solid #ddd;
+        border-top-color: #667eea;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .tip-box {
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 0.83em;
+        color: #92400e;
+        line-height: 1.6;
+      }
+
+      .prompt-text {
+        font-size: 0.78em;
+        color: #999;
+        line-height: 1.7;
+        background: #fafafa;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        padding: 10px 14px;
+        white-space: pre-wrap;
+        max-height: 180px;
+        overflow-y: auto;
+      }
+
+      .inline-copied {
+        margin-left: 8px;
+        color: #16a34a;
+        font-size: 0.85em;
+        display: none;
+      }
+
+      hr.divider {
+        border: none;
+        border-top: 1px solid #eee;
+        margin: 18px 0;
+      }
+
+      .label-sm {
+        font-size: 0.83em;
+        color: #888;
+        margin-bottom: 6px;
+      }
+
+      /* Prompt selector */
+      .prompt-cards {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+      }
+      .prompt-card {
+        flex: 1;
+        min-width: 130px;
+        padding: 12px 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        cursor: pointer;
+        text-align: center;
+        font-size: 0.85em;
+        font-weight: 600;
+        transition: all 0.18s;
+        background: #fafafa;
+        user-select: none;
+      }
+      .prompt-card:hover {
+        border-color: #c4b5fd;
+        background: #f5f3ff;
+      }
+      .prompt-card.active {
+        border-color: #667eea;
+        background: linear-gradient(135deg, #ede9fe, #f5f3ff);
+        color: #5b21b6;
+        box-shadow: 0 2px 10px rgba(102, 126, 234, 0.2);
+      }
+      .prompt-card-badge {
+        display: block;
+        font-size: 0.7em;
+        padding: 2px 10px;
+        border-radius: 10px;
+        background: #667eea;
+        color: #fff;
+        margin: 0 auto 4px;
+      }
+      .prompt-card.active .prompt-card-badge {
+        background: #5b21b6;
+      }
+      .prompt-card-desc {
+        display: block;
+        font-size: 0.78em;
+        font-weight: 400;
+        color: #888;
+        margin-top: 2px;
+      }
+      .prompt-card.active .prompt-card-desc {
+        color: #7c3aed;
+      }
+
+      @media (max-width: 1100px) {
+        .main {
+          flex-direction: column;
+          max-width: 860px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>英文 HTML → 趣味中文精美排版</h1>
+      <p>提取 · 翻译 · 排版 · 导出 PDF</p>
+    </div>
+
+    <div class="main">
+      <!-- ===== Step 1: 输入文章 & 提取 ===== -->
+      <div class="card">
+        <h2><span class="step-num">1</span> 输入文章 & 提取</h2>
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab('url')">网页 URL</div>
+          <div class="tab" onclick="switchTab('html')">粘贴 HTML</div>
+        </div>
+        <div id="tab-url">
+          <input type="url" id="inputUrl" placeholder="https://example.com/article" />
+        </div>
+        <div id="tab-html" style="display: none">
+          <textarea id="inputHtml" rows="6" placeholder="在此粘贴英文文章的 HTML 源码..." class="code"></textarea>
+        </div>
+        <div class="row" style="margin-top: 10px">
+          <button class="btn btn-primary" onclick="doExtract()" id="btnExtract">
+            <span class="spinner" id="spinExtract"></span> 提取文章
+          </button>
+        </div>
+        <div class="msg" id="msgExtract"></div>
+      </div>
+
+      <!-- ===== Step 2: 提取结果 & 翻译 ===== -->
+      <div class="card">
+        <h2><span class="step-num">2</span> 提取结果 & 翻译</h2>
+
+        <!-- 预览 -->
+        <p class="label-sm">英文原文预览</p>
+        <div class="md-preview placeholder" id="enPreview">提取文章后，英文 Markdown 内容将显示在此处...</div>
+
+        <!-- 复制按钮 -->
+        <div class="row" style="margin-top: 10px">
+          <button class="btn btn-primary btn-sm" onclick="copyEnWithPrompt()" id="btnCopyWithPrompt" disabled>
+            复制原文+翻译指令
+          </button>
+          <button class="btn btn-outline btn-sm" onclick="copyEnMarkdown()" id="btnCopyEn" disabled>
+            复制英文 Markdown
+          </button>
+          <span class="inline-copied" id="enCopied">已复制！</span>
+        </div>
+
+        <!-- 翻译指令选择 -->
+        <p class="label-sm" style="margin-top: 14px">选择翻译指令（点击卡片切换，复制时自动拼接）</p>
+        <div class="prompt-cards" id="promptCards"></div>
+        <div class="prompt-text" id="promptPreview"></div>
+
+        <hr class="divider" />
+
+        <!-- 翻译平台 -->
+        <p class="label-sm">选一个翻译平台，粘贴内容即可：</p>
+        <div class="tools-grid">
+          <a href="https://chat.deepseek.com" target="_blank" rel="noopener" class="tool-btn"
+            >DeepSeek <span class="arrow">↗</span></a
+          >
+          <a href="https://www.doubao.com/chat" target="_blank" rel="noopener" class="tool-btn"
+            >豆包 <span class="arrow">↗</span></a
+          >
+          <a href="https://tongyi.aliyun.com" target="_blank" rel="noopener" class="tool-btn"
+            >通义千问 <span class="arrow">↗</span></a
+          >
+        </div>
+      </div>
+
+      <!-- ===== Step 3: 粘贴中文 Markdown ===== -->
+      <div class="card">
+        <h2><span class="step-num">3</span> 粘贴中文 Markdown</h2>
+        <textarea
+          id="cnMarkdown"
+          rows="10"
+          class="code"
+          placeholder="将 AI 翻译后的中文 Markdown 粘贴到这里..."
+        ></textarea>
+        <div class="row" style="margin-top: 8px">
+          <button class="btn btn-outline btn-sm" onclick="doDownloadMD()">下载中文 Markdown</button>
+          <a
+            href="https://markdowntoword.io/zh/"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-outline btn-sm"
+            style="text-decoration: none"
+            >Markdown 转格式 ↗</a
+          >
+          <button class="btn btn-outline btn-sm" onclick="pasteEnMarkdown()">填入英文原文</button>
+          <span style="font-size: 0.8em; color: #888">先占位，再替换为中文翻译</span>
+        </div>
+        <div class="msg" id="msgStep3"></div>
+      </div>
+    </div>
+
+    <script>
+      const PROMPTS = [
+        {
+          name: "精炼讲故事",
+          desc: "视觉化·布道师风格",
+          text: `【角色设定】
+你是一位风趣幽默、深谙“降维打击”之道的首席技术布道师。你的受众是刚入门的技术小白。你的使命是剥开技术高冷的外衣，用大白话帮他们建立“技术审美”。
+
+【核心任务】
+请将我提供的【英文技术文稿/逐字稿】转化为一份具有“视觉化、故事感”的进阶学习笔记。
+
+【执行策略与输出规范】
+
+1. 剧幕式叙事（破局与重组）：
+打破原文原有的枯燥结构，将核心内容重组为 3-5 个逻辑递进的“剧幕”。每个剧幕的标题必须是极具网感和悬念的“钩子式反问”（例如：“🔥 一个诺贝尔物理学奖得主，为什么跑去创业公司焊电路板？”）。
+
+2. 降维比喻（概念锚定）：
+遇到核心专业词汇，必须采用“专业术语 + 通俗类比”的结构。
+
+示例：不要只写“找个私教”，要写“RLHF（基于人类反馈的强化学习）——这就好比给 AI 找了个严厉的私教，答错了就打手心”。
+
+语气：像朋友喝咖啡时聊天一样自然，彻底消除翻译腔。
+
+3. 高颜排版（视觉锚点）：
+
+在小标题和关键段落精准使用 Emoji（🚀💡🧠🔥等）。
+
+原文中的核心金句、硬核数据、关键结论，必须使用 Markdown 引用框（>）或【】高亮标出，确保手机端一眼抓取。
+
+【不可逾越的边界（事实围栏）】
+
+事实绝对忠诚：你可以为了通俗易懂而改变句式、重组逻辑框架、添加幽默吐槽，但绝对禁止凭空捏造原文中不存在的数据、案例、实验结果或人物发言。
+
+不遗漏核心：确保原文推导结论的“必要条件”不被比喻吃掉。
+
+【结尾彩蛋】
+在文章末尾，独立成段，提供如下格式的彩蛋：
+“💡 底层思维模型提取：如果今天只记住一个概念，那应该是【填入核心概念】，因为【一句话点透它的本质】。`,
+        },
+        {
+          name: "中英对照",
+          desc: "双语·行业语境",
+          text: `请将以上英文 Markdown 文章，保留原文英文内容，按以下要求进行“段落级”的中英对照翻译：
+
+1.【核心底线：图片绝对保护】：原文中的图片标签（如 \`![alt](url)\` 或 \`<img>\` 标签）必须 100% 原样保留！绝对禁止翻译图片 alt 文本，禁止修改或遗漏任何 URL。重排版时，图片代码必须独立成行（上下各留一个空行），放置在对应的中英对照段落下方。
+2.【重构与美化排版】：原文的 Markdown 格式可能比较凌乱，请发挥你的排版能力重新梳理。合理使用 1-3 级标题（#）、列表（-）、加粗（**）和引用块（>）来重构文章层级。要求大标题醒目，段落分段合理、留白均匀，小标题、列表单独规整，整体视觉干净整洁、阅读舒适。
+3.【翻译风格：自然通俗】：将英文翻译为轻松有趣、贴合日常阅读口吻的简体中文。拆分长难句，像圈内朋友聊天一样自然，彻底消除翻译腔和生硬的书面感；保留原文全部信息、逻辑、细节，不删减、不篡改文意，好懂不枯燥。
+4.【内容忠实：无私货】：忠于原观点，不添加任何虚构信息和主观评价，完整保留核心判断、行业洞察与真实案例。
+5.【术语与背景补充】：核心专业术语、行业黑话保留英文原词，第一次出现时用括号标注通俗中文解释；遇到小众公司、产品或行业梗，在当前段落内补充 1-3 句极简背景说明，帮助熟悉行业语境。
+6.【输出规范】：严格按照“一段英文（重排版后），紧跟一段中文”的格式对照输出。最终成品需是一篇图文完全无损、排版精致、语言轻松的优质文章。`,
+        },
+        {
+          name: "纯净中文", // 把原先的'有中文'稍微润色了一下，你也可以改回'有中文'
+          desc: "口语化·轻松自然",
+          text: `【核心任务】
+请将提供的英文 Markdown 文章，翻译并转化为一篇“全中文、高颜值、易阅读”的深度好文。
+
+【执行规范】
+1. 翻译风格（生动接地气）：彻底告别生硬的“机翻味”和死板书面语。采用轻松有趣、自然通俗的口语化表达，像优质爆款文章一样娓娓道来。巧妙拆解长难句，降低阅读门槛。
+2. 内容忠实（零删减）：100% 完整保留原文的所有信息、核心逻辑、细节和真实案例。不增减内容，不篡改文意，不夹带主观私货。
+3. 核心底线（图片绝对保护）：原文中的所有图片标签（如 \`![alt](url)\`）必须 100% 原样保留！绝对禁止翻译图片 alt 文本或乱加 HTML 标签。图片需在对应的中文段落下方独立成行（上下各留空行），确保图文紧跟、绝不丢失。
+4. 高颜排版（清爽呼吸感）：发挥你的排版美学重新梳理文章。合理使用各级标题、列表、加粗和引用。要求大标题醒目，段落切分合理、留白均匀；特殊格式单独规整，整体视觉干净整洁。
+5. 纯净输出（单语直出）：仅输出最终排版好的【纯中文完整版】。禁止保留英文原文段落（专业专有名词除外），禁止做双语对照，禁止输出任何诸如“好的，这是翻译结果”之类的开场白或解释性废话。`,
+        },
+      ];
+
+      let selectedPromptIndex = 0;
+
+      function renderPromptCards() {
+        const container = document.getElementById("promptCards");
+        container.innerHTML = PROMPTS.map(
+          (p, i) =>
+            `<div class="prompt-card${i === selectedPromptIndex ? " active" : ""}" onclick="selectPrompt(${i})">
+      <span class="prompt-card-badge">指令${i + 1}</span>
+      ${p.name}
+      <span class="prompt-card-desc">${p.desc}</span>
+    </div>`,
+        ).join("");
+        document.getElementById("promptPreview").textContent = PROMPTS[selectedPromptIndex].text;
+      }
+
+      function selectPrompt(index) {
+        selectedPromptIndex = index;
+        renderPromptCards();
+      }
+
+      let extractedMarkdown = "";
+      let extractedTitle = "";
+      let currentTab = "url";
+
+      function switchTab(tab) {
+        currentTab = tab;
+        document.querySelectorAll(".tab").forEach((el, i) => {
+          el.classList.toggle("active", (i === 0 && tab === "url") || (i === 1 && tab === "html"));
+        });
+        document.getElementById("tab-url").style.display = tab === "url" ? "" : "none";
+        document.getElementById("tab-html").style.display = tab === "html" ? "" : "none";
+      }
+
+      function showMsg(id, text, isError) {
+        const el = document.getElementById(id);
+        el.textContent = text;
+        el.className = "msg " + (isError ? "error" : "success");
+        setTimeout(() => {
+          el.className = "msg";
+        }, 5000);
+      }
+
+      function setLoading(btnId, spinId, loading) {
+        document.getElementById(btnId).disabled = loading;
+        document.getElementById(spinId).style.display = loading ? "inline-block" : "none";
+      }
+
+      async function doExtract() {
+        setLoading("btnExtract", "spinExtract", true);
+        document.getElementById("msgExtract").className = "msg";
+
+        try {
+          const body =
+            currentTab === "url"
+              ? { url: document.getElementById("inputUrl").value.trim() }
+              : { html: document.getElementById("inputHtml").value };
+
+          if (currentTab === "url" && !body.url) {
+            showMsg("msgExtract", "请输入文章 URL", true);
+            setLoading("btnExtract", "spinExtract", false);
+            return;
+          }
+          if (currentTab === "html" && !body.html) {
+            showMsg("msgExtract", "请粘贴 HTML 内容", true);
+            setLoading("btnExtract", "spinExtract", false);
+            return;
+          }
+
+          const res = await fetch("/api/extract", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+          const data = await res.json();
+
+          if (data.success) {
+            extractedMarkdown = data.markdown;
+            extractedTitle = data.title;
+            const preview = document.getElementById("enPreview");
+            preview.textContent = data.markdown;
+            preview.classList.remove("placeholder");
+            document.getElementById("btnCopyEn").disabled = false;
+            document.getElementById("btnCopyWithPrompt").disabled = false;
+            document.getElementById("cnMarkdown").value = "";
+            showMsg("msgExtract", `提取成功！标题：${data.title}，共 ${data.markdown.length} 字符`, false);
+          } else {
+            showMsg("msgExtract", data.error, true);
+          }
+        } catch (err) {
+          showMsg("msgExtract", "网络错误：" + err.message, true);
+        }
+        setLoading("btnExtract", "spinExtract", false);
+      }
+
+      function pasteEnMarkdown() {
+        if (!extractedMarkdown) return;
+        document.getElementById("cnMarkdown").value = extractedMarkdown;
+      }
+
+      function copyEnMarkdown() {
+        if (!extractedMarkdown) return;
+        navigator.clipboard.writeText(extractedMarkdown).then(() => showCopied("enCopied"));
+      }
+
+      function copyEnWithPrompt() {
+        if (!extractedMarkdown) return;
+        const prompt = "\n\n---\n\n" + PROMPTS[selectedPromptIndex].text;
+        navigator.clipboard.writeText(extractedMarkdown + prompt).then(() => showCopied("enCopied"));
+      }
+
+      function showCopied(id) {
+        const el = document.getElementById(id);
+        el.style.display = "inline";
+        el.textContent = "已复制！";
+        setTimeout(() => {
+          el.style.display = "none";
+        }, 2000);
+      }
+
+      function doDownloadMD() {
+        const md = document.getElementById("cnMarkdown").value.trim();
+        const filename = extractedTitle ? extractedTitle.replace(/[\/\\:*?"<>|]/g, "-").substring(0, 40) : "article";
+
+        if (!md) {
+          showMsg("msgStep3", "请先粘贴翻译后的中文 Markdown", true);
+          return;
+        }
+
+        fetch("/api/download-md", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ markdown: md, filename }),
+        })
+          .then((res) => res.blob())
+          .then((blob) => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename + ".md";
+            a.click();
+            URL.revokeObjectURL(url);
+            showMsg("msgStep3", "下载成功！", false);
+          });
+      }
+
+      renderPromptCards();
+    </script>
+  </body>
+</html>

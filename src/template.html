@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>{{TITLE}}</title>
+  <style>
+    @font-face {
+      font-family: 'LXGW WenKai';
+      src: url('{{FONT_PATH}}') format('truetype');
+      font-display: swap;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'LXGW WenKai', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+      font-size: 15px;
+      line-height: 2;
+      color: #2c2c2c;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 60px 50px;
+      background: #fff;
+    }
+
+    /* ---- Headings ---- */
+    h1 {
+      font-size: 2em;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #e8e8e8;
+      color: #1a1a1a;
+      line-height: 1.4;
+    }
+
+    h2 {
+      font-size: 1.4em;
+      font-weight: 700;
+      margin: 36px 0 16px;
+      color: #1a1a1a;
+      padding-left: 12px;
+      border-left: 4px solid #2563eb;
+    }
+
+    h3 {
+      font-size: 1.15em;
+      font-weight: 600;
+      margin: 28px 0 12px;
+      color: #333;
+    }
+
+    h4, h5, h6 {
+      font-size: 1.05em;
+      font-weight: 600;
+      margin: 24px 0 10px;
+      color: #444;
+    }
+
+    /* ---- Paragraphs ---- */
+    p {
+      margin: 0 0 16px;
+      text-align: justify;
+      text-indent: 2em;
+    }
+
+    p:first-of-type {
+      /* first paragraph after heading keeps indent */
+    }
+
+    /* ---- Images ---- */
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 24px auto;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      page-break-inside: avoid;
+    }
+
+    p:has(img) {
+      text-indent: 0;
+    }
+
+    /* Image caption (italic text right after image) */
+    p img + em,
+    em:only-child {
+      display: block;
+      text-align: center;
+      font-size: 0.85em;
+      color: #888;
+      margin-top: -16px;
+      margin-bottom: 20px;
+    }
+
+    /* ---- Blockquotes ---- */
+    blockquote {
+      margin: 20px 0;
+      padding: 14px 20px;
+      background: #f7f8fa;
+      border-left: 4px solid #94a3b8;
+      border-radius: 0 6px 6px 0;
+      color: #555;
+      font-style: italic;
+    }
+
+    blockquote p {
+      margin: 0;
+      text-indent: 0;
+    }
+
+    /* ---- Lists ---- */
+    ul, ol {
+      margin: 12px 0 16px 24px;
+    }
+
+    ul li, ol li {
+      margin-bottom: 6px;
+      padding-left: 4px;
+    }
+
+    ul { list-style-type: disc; }
+    ul ul { list-style-type: circle; }
+    ul ul ul { list-style-type: square; }
+
+    /* ---- Code ---- */
+    code {
+      background: #f1f3f5;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', monospace;
+      font-size: 0.88em;
+      color: #d63384;
+    }
+
+    pre {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 20px 24px;
+      border-radius: 8px;
+      margin: 20px 0;
+      overflow-x: auto;
+      font-size: 0.85em;
+      line-height: 1.7;
+      page-break-inside: avoid;
+    }
+
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+    }
+
+    /* ---- Horizontal Rule ---- */
+    hr {
+      border: none;
+      border-top: 1px solid #e0e0e0;
+      margin: 36px 0;
+    }
+
+    /* ---- Tables ---- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.9em;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px 14px;
+      text-align: left;
+    }
+
+    th {
+      background: #f7f8fa;
+      font-weight: 600;
+    }
+
+    /* ---- Strong / Emphasis ---- */
+    strong { color: #1a1a1a; }
+
+    /* ---- Page Break ---- */
+    @media print {
+      body { padding: 0; }
+      h1 { page-break-after: avoid; }
+      h2, h3 { page-break-after: avoid; }
+      pre, blockquote, img { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+{{CONTENT}}
+</body>
+</html>
