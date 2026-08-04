@@ -2,3 +2,4 @@ node_modules/
 output/
 *.pdf
 .DS_Store
+.history
