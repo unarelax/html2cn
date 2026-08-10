@@ -1,77 +1,98 @@
-# HTML → 趣味中文排版
+# html2cn
 
-将英文网页文章一键转为轻松有趣的中文阅读版，支持 Markdown 导出和 PDF 排版。
+**English articles → Beautiful Chinese reading experience, in one click.**
 
-## 工作流
+`html2cn` extracts content from any English article (URL or HTML), preserves images and structure, and provides AI translation prompts so you can turn it into a well-formatted Chinese article — ready for reading, sharing, or PDF export.
 
-```
-英文文章 URL/HTML → 提取正文+配图 → AI 翻译为趣味中文 → 精美 Markdown/PDF 输出
-```
+## Why
 
-## 功能
+Reading English articles is fine. Reading a beautifully typeset Chinese version with all images intact and a natural, conversational tone is better. `html2cn` handles the tedious parts — content extraction, Markdown cleanup, typography-ready PDF rendering — so you only do the creative part: translating with your favorite AI.
 
-- **精准提取**：基于 Mozilla Readability，自动过滤导航、广告、侧边栏，保留图片、标题、段落、列表、引用
-- **翻译助手**：内置翻译指令模板，一键跳转豆包/DeepSeek/通义千问，复制即用
-- **图片保护**：Markdown `![](url)` 格式锁定图片位置，翻译过程不丢失
-- **格式转换**：一键跳转 Markdown 转 Word 工具
-- **PDF 导出**：中文排版精美，支持自定义字体
+## Features
 
-## 快速开始
+- **Clean extraction** — Uses Mozilla Readability to pull article body content, stripping nav, ads, sidebars, and cruft. Images, headings, lists, quotes, and code blocks are all preserved
+- **AI-powered translation** — Built-in translation prompt templates (casual, storytelling, bilingual) with one-click copy + jump to DeepSeek, Doubao, Kimi, Tongyi, Claude, or ChatGPT
+- **Image protection** — All `![](url)` markup is locked in place; translation won't lose images
+- **Chinese-first PDF** — Puppeteer-rendered PDF with proper Chinese typography (A4, custom fonts supported, print-optimized CSS)
+- **Web UI + CLI** — Browser-based interface for quick use, or command-line for scripting
+
+## Quick Start
 
 ```bash
-# 安装依赖
+# Install dependencies
 npm install
 
-# 启动 Web 界面
+# Start the web UI
 npm start
 ```
 
-浏览器打开 ``，三步完成：
+Open `http://localhost:3456` and follow the 3-step flow:
 
-1. **输入文章** — 粘贴 URL 或 HTML 源码，点击提取
-2. **提取 & 翻译** — 复制原文+翻译指令，跳转 AI 平台翻译
-3. **粘贴中文** — 贴回译文，下载 Markdown 或转格式
+1. **Input article** — Paste a URL or HTML source, click extract
+2. **Translate** — Copy the English Markdown + translation prompt, paste into any AI platform
+3. **Download** — Paste the Chinese result back, download as Markdown or convert to PDF
 
-## CLI 命令
+## CLI
 
 ```bash
-# 从 URL 提取英文 Markdown
+# Extract English Markdown from a URL
 node cli.js extract https://example.com/article -o output/en.md
 
-# 从本地 HTML 文件提取
+# Extract from local HTML file
 node cli.js extract article.html -o output/en.md
 
-# Markdown 导出 PDF
+# Convert Markdown to PDF (Chinese typography)
 node cli.js pdf output/cn.md -o output/article.pdf
+
+# Use custom Chinese font
+node cli.js pdf output/cn.md --font ./fonts/LXGWWenKai.ttf
 ```
 
-## 项目结构
+## How It Works
+
+```
+URL / HTML
+  → [Mozilla Readability] extract article body
+  → [Turndown] convert to clean Markdown
+  → [AI platform] translate to Chinese
+  → [Marked + Puppeteer] render as PDF with Chinese layout
+```
+
+## Project Structure
 
 ```
 html2cn/
-├── cli.js                  # CLI 入口
+├── cli.js                  # CLI entry point
 ├── src/
-│   ├── server.js           # Express Web 服务
-│   ├── ui.html             # Web UI 界面
-│   ├── extractor.js        # HTML 正文提取
-│   ├── translate-helper.js # 翻译助手页面生成
-│   ├── pdf.js              # Markdown → PDF
-│   └── template.html       # PDF 排版模板
-├── output/                 # 输出目录
-└── fonts/                  # 自定义字体（可选）
+│   ├── server.js           # Express web server
+│   ├── ui.html             # Web UI
+│   ├── extractor.js        # HTML → Markdown extraction
+│   ├── translate-helper.js # Translation prompt helper
+│   ├── pdf.js              # Markdown → PDF rendering
+│   └── template.html       # PDF layout template
+├── output/                 # Default output directory
+└── fonts/                  # Custom fonts (optional)
 ```
 
-## 依赖
+## Dependencies
 
-| 包 | 用途 |
+| Package | Purpose |
 |---|---|
-| @mozilla/readability | 网页正文提取 |
-| jsdom | Node.js DOM 解析 |
-| turndown | HTML → Markdown |
-| marked | Markdown → HTML |
-| puppeteer | HTML → PDF |
-| express | Web 服务 |
-| commander | CLI 参数解析 |
+| [@mozilla/readability](https://github.com/mozilla/readability) | Article body extraction |
+| [jsdom](https://github.com/jsdom/jsdom) | DOM parsing in Node.js |
+| [turndown](https://github.com/mixmark-io/turndown) | HTML → Markdown conversion |
+| [marked](https://github.com/markedjs/marked) | Markdown → HTML |
+| [puppeteer](https://github.com/puppeteer/puppeteer) | HTML → PDF rendering |
+| [express](https://github.com/expressjs/express) | Web server |
+| [commander](https://github.com/tj/commander.js) | CLI argument parsing |
+
+## Custom Fonts
+
+For better Chinese typography in PDF output, download a Chinese font (e.g., [LXGW WenKai](https://github.com/lxgw/LxgwWenKai)) and place it in the `fonts/` directory, then use:
+
+```bash
+node cli.js pdf article.md --font ./fonts/LXGWWenKai.ttf
+```
 
 ## License
 

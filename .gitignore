@@ -3,3 +3,4 @@ output/
 *.pdf
 .DS_Store
 .history
+.claude/
