@@ -2,25 +2,54 @@ import { Readability } from '@mozilla/readability';
 import TurndownService from 'turndown';
 
 /**
- * Fetch HTML from a URL via a CORS proxy.
+ * Fetch HTML from a URL. Tries direct fetch first, then several CORS proxies.
+ * Static sites can't fetch arbitrary cross-origin URLs without a proxy, so we
+ * fall back through a list of public CORS proxies in order of reliability.
  */
+const CORS_PROXIES = [
+  (url) => `https://proxy.cors.sh/${url}`,
+  (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+  (url) => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+];
+
+async function fetchWithTimeout(url, timeoutMs) {
+  const res = await fetch(url, {
+    signal: AbortSignal.timeout(timeoutMs),
+    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.text();
+}
+
 async function fetchHTML(url) {
-  // Try direct fetch first
+  // 1) Direct fetch — works for sites that already send CORS headers
   try {
-    const res = await fetch(url, {
-      signal: AbortSignal.timeout(15000),
-      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
-    });
-    if (res.ok) return await res.text();
+    return await fetchWithTimeout(url, 15000);
   } catch (e) {
-    // fall through to proxy
+    // fall through to proxies
   }
 
-  // Fallback: use allorigins CORS proxy
-  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-  const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(30000) });
-  if (!res.ok) throw new Error(`Failed to fetch: HTTP ${res.status}`);
-  return await res.text();
+  // 2) Try each CORS proxy in order
+  let lastError = null;
+  for (const buildProxyUrl of CORS_PROXIES) {
+    try {
+      const proxyUrl = buildProxyUrl(url);
+      const text = await fetchWithTimeout(proxyUrl, 30000);
+      // Some proxies return an error page/JSON instead of the real article
+      if (text && !text.trim().startsWith('{') && text.length > 500) {
+        return text;
+      }
+      lastError = new Error('Proxy returned invalid content');
+    } catch (err) {
+      lastError = err;
+    }
+  }
+
+  throw new Error(
+    '无法直接抓取该网页（跨域限制）。请回到第 1 步，切换到「粘贴 HTML」标签，用浏览器打开文章后「查看源代码」复制全文粘贴进来。' +
+      (lastError ? `（原因: ${lastError.message}）` : '')
+  );
 }
 
 /**
